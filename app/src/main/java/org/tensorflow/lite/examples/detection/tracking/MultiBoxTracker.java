@@ -26,6 +26,7 @@ import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.hardware.Camera;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.util.Size;
@@ -34,6 +35,7 @@ import java.lang.Math;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 import org.tensorflow.lite.examples.detection.env.BorderedText;
 import org.tensorflow.lite.examples.detection.env.ImageUtils;
@@ -74,7 +76,9 @@ public class MultiBoxTracker {
   private int sensorOrientation;
   float focalLength;
   float horizontalAngleView;
+  private TextToSpeech tts;
   Camera  camera;
+  private boolean sound = false;
 
   //add params
   Camera.Parameters params;
@@ -114,6 +118,15 @@ public class MultiBoxTracker {
 ////      focalLength = parameters.getFocalLength();
 //      System.out.println("Focal2: " + focalLength);
 //    }
+
+    tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
+      @Override
+      public void onInit(int status) {
+        if(status != TextToSpeech.ERROR) {
+          tts.setLanguage(Locale.UK);
+        }
+      }
+    });
 
     textSizePx =
         TypedValue.applyDimension(
@@ -247,6 +260,11 @@ public class MultiBoxTracker {
                         : String.format("%.2f", (100 * recognition.detectionConfidence));
         //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
         // labelString);
+        if (!sound) {
+          sound = true;
+          makeSound("There is a " + label + " " + Math.round(heightObject) + " feet to your " + position);
+        }
+
         borderedText.drawText(
                 canvas, trackedPos.left + cornerSize, trackedPos.top, labelString, boxPaint);
         borderedText.drawText(
@@ -255,6 +273,35 @@ public class MultiBoxTracker {
     }
   }
 
+  private void makeSound (String content) {
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+//                    System.out.println("Shake: " + shaking);
+//                    System.out.println("Wait: " + wait);
+          // we add 100 new entries
+
+          tts.speak(content, TextToSpeech.QUEUE_ADD, null);
+          System.out.println("content: " + content);
+          for (int i = 1; i < 20; i++) {
+            System.out.println("Shake: " + i);
+            //Toast.makeText( getActivity(),"Cancel Alert in: " +i + " seconds", Toast.LENGTH_SHORT).show();
+            Thread.sleep(200);
+
+          }
+          tts.stop();
+          //tts.shutdown();
+          sound = false;
+
+
+        }
+        catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }).start();
+  }
 
   private float distance_to_camera(float knownWidth, float focalLength, float perWidth) {
       //compute and return the distance from the maker to the camera
