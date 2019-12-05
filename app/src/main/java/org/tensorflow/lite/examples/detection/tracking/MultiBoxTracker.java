@@ -94,30 +94,30 @@ public class MultiBoxTracker {
     boxPaint.setStrokeJoin(Join.ROUND);
     boxPaint.setStrokeMiter(100);
 
-    focalLength = 1250;
-//    try {
-//      camera = Camera.open();
-////      camera.startPreview();
-////      System.out.println("Detect: ");
-//      android.hardware.Camera.Parameters parameters;
-//      parameters = camera.getParameters();
-//      focalLength = parameters.getFocalLength();
-//      horizontalAngleView = parameters.getHorizontalViewAngle();
-////      focalLength = (float) ((sizeWidth * 0.5) / Math.tan(horizontalAngleView * 0.5 * Math.PI/180));
+//    focalLength = 1250;
+    try {
+      camera = Camera.open();
+      camera.startPreview();
+//      System.out.println("Detect: ");
+      android.hardware.Camera.Parameters parameters;
+      parameters = camera.getParameters();
+      focalLength = parameters.getFocalLength();
+      horizontalAngleView = parameters.getHorizontalViewAngle();
+      focalLength = (float) ((sizeWidth * 0.5) / Math.tan(horizontalAngleView * 0.5 * Math.PI/180));
 //      focalLength = 1250;
-////      camera.stopPreview();
-////      camera.release();
-//      System.out.println("Focal: " + focalLength);
-//
-//    } catch (RuntimeException ex) {
-//      // Here is your problem. Catching RuntimeException will make camera object null,
-//// so method 'getParameters();' won't work :)
-//      System.out.println("Fail: " + ex);
-//      android.hardware.Camera.Parameters parameters;
-//      parameters = camera.getParameters();
-////      focalLength = parameters.getFocalLength();
-//      System.out.println("Focal2: " + focalLength);
-//    }
+      camera.stopPreview();
+      camera.release();
+      System.out.println("Focal: " + focalLength);
+
+    } catch (RuntimeException ex) {
+      // Here is your problem. Catching RuntimeException will make camera object null,
+// so method 'getParameters();' won't work :)
+      System.out.println("Fail: " + ex);
+      android.hardware.Camera.Parameters parameters;
+      parameters = camera.getParameters();
+      focalLength = parameters.getFocalLength();
+      System.out.println("Focal2: " + focalLength);
+    }
 
     tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
       @Override
@@ -141,18 +141,6 @@ public class MultiBoxTracker {
     this.sensorOrientation = sensorOrientation;
   }
 
-  /** Callback for android.hardware.Camera API */
-//  public float onPreviewFrame(final byte[] bytes, final Camera camera) {
-//
-//    try {
-//      // Initialize the storage bitmaps once when the resolution is known.
-//
-//      return camera.getParameters().getFocalLength();
-//    } catch (final Exception e) {
-//      System.out.println(e + " Exception!");
-//      return;
-//    }
-//  }
 
 
     public synchronized void drawDebug(final Canvas canvas) {
@@ -212,33 +200,8 @@ public class MultiBoxTracker {
         int height = Resources.getSystem().getDisplayMetrics().heightPixels;
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
 
-  //      System.out.println("Screen: " + String.valueOf(height) + " " + String.valueOf(width));
-  //      System.out.println("Obeject: Top-" + String.valueOf(trackedPos.top) + " bottom-" +
-  //              String.valueOf(trackedPos.bottom) +" left-" + String.valueOf(trackedPos.left)
-  //              +" right-" + String.valueOf(trackedPos.right));
-        String position = "";
-//        if (width / 2 > trackedPos.left && width / 2 < trackedPos.right && (trackedPos.right - trackedPos.left) <= width / 2  )
-//          position = "Center";
-//        else if (trackedPos.left < width / 20 && trackedPos.right < width / 2)
-//          position = "Extreme Left";
-//        else if (trackedPos.right > (width - width / 10) && trackedPos.left > width / 2)
-//          position = "Extreme Right";
-//        else
-        if (trackedPos.right - width / 2 < width / 10 && trackedPos.left < width / 4) {
-          if (trackedPos.left < width / 10)
-            position = "Extreme Left";
-          else
-            position = "Left";
-        }
 
-        else if (width / 2 - trackedPos.left < width / 10 && width - trackedPos.right < width / 4) {
-          if (trackedPos.right > (width - width / 10))
-            position = "Extreme Right";
-          else
-            position = "Right";
-        }
-        else
-          position = "Center";
+        String position = objectPosition(trackedPos, width);
 
 
   //      System.out.println("Object: " + recognition.title);
@@ -251,24 +214,24 @@ public class MultiBoxTracker {
           heightObject = (float) 6.0;
         else if (recognition.title.equals("car"))
           heightObject = (float) 4.5;
-        System.out.println("Object Inside: " + (trackedPos.bottom - trackedPos.top) + " " + recognition.title);
-        heightObject = distance_to_camera(heightObject, focalLength, trackedPos.bottom - trackedPos.top);
+        System.out.println("Object Inside: Height " + (trackedPos.bottom - trackedPos.top) + " - Width " + (trackedPos.right - trackedPos.left) + " - " + recognition.title);
+        float distance = distance_to_camera(heightObject, focalLength, trackedPos.bottom - trackedPos.top);
         final String label = recognition.title.substring(0, 1).toUpperCase() + recognition.title.substring(1);
         final String labelString =
                 !TextUtils.isEmpty(recognition.title)
-                        ? String.format("%s - %s", label, position, heightObject)
+                        ? String.format("%s - %s", label, position, distance)
                         : String.format("%.2f", (100 * recognition.detectionConfidence));
         //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
         // labelString);
         if (!sound) {
           sound = true;
-          makeSound("There is a " + label + " " + Math.round(heightObject) + " feet to your " + position);
+          makeSound("There is a " + label + " " + Math.round(distance) + " feet to your " + position);
         }
 
         borderedText.drawText(
                 canvas, trackedPos.left + cornerSize, trackedPos.top, labelString, boxPaint);
         borderedText.drawText(
-                canvas, trackedPos.left + cornerSize, trackedPos.bottom, String.format("%.2f ft", heightObject), boxPaint);
+                canvas, trackedPos.left + cornerSize, trackedPos.bottom, String.format("%.2f ft", distance), boxPaint);
       }
     }
   }
@@ -283,9 +246,9 @@ public class MultiBoxTracker {
           // we add 100 new entries
 
           tts.speak(content, TextToSpeech.QUEUE_ADD, null);
-          System.out.println("content: " + content);
+//          System.out.println("content: " + content);
           for (int i = 1; i < 20; i++) {
-            System.out.println("Shake: " + i);
+//            System.out.println("Shake: " + i);
             //Toast.makeText( getActivity(),"Cancel Alert in: " +i + " seconds", Toast.LENGTH_SHORT).show();
             Thread.sleep(200);
 
@@ -306,6 +269,29 @@ public class MultiBoxTracker {
   private float distance_to_camera(float knownWidth, float focalLength, float perWidth) {
       //compute and return the distance from the maker to the camera
       return (knownWidth * focalLength) / perWidth;
+  }
+
+  private String objectPosition (RectF trackedPos, int width) {
+    String position = "";
+    if ((trackedPos.right <= width / 2) ||
+            (trackedPos.right - width / 2 < width / 8 && trackedPos.left < width / 4))
+    {
+      if (trackedPos.right <= width / 4)
+        position = "Extreme Left";
+      else
+        position = "Left";
+    }
+
+    else if ((trackedPos.left >= width / 2) ||
+            (width / 2 - trackedPos.left < width / 8 && width - trackedPos.right < width / 4)) {
+      if (trackedPos.left >= (width - width / 4))
+        position = "Extreme Right";
+      else
+        position = "Right";
+    }
+    else
+      position = "Center";
+    return position;
   }
 
   private void processResults(final List<Recognition> results) {
