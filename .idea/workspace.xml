@@ -6,50 +6,20 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="obj" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="sizeWidth" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6613f955-98c9-4035-931e-17bb9df7fc1b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_1_0_0_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_common_2_0_0_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_asynclayoutinflater_asynclayoutinflater_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cardview_cardview_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_collection_collection_1_0_0_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_coordinatorlayout_coordinatorlayout_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_cursoradapter_cursoradapter_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_customview_customview_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_documentfile_documentfile_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_drawerlayout_drawerlayout_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_interpolator_interpolator_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_ui_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_legacy_legacy_support_core_utils_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_common_2_0_0_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_loader_loader_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_localbroadcastmanager_localbroadcastmanager_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_print_print_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_slidingpanelayout_slidingpanelayout_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_swiperefreshlayout_swiperefreshlayout_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_transition_transition_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_vectordrawable_vectordrawable_animated_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_versionedparcelable_versionedparcelable_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_viewpager_viewpager_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_android_material_material_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_tensorflow_tensorflow_lite_0_0_0_nightly_aar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/DetectorActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/DetectorActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/classAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/tracking/MultiBoxTracker.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/tracking/MultiBoxTracker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tensorflow-lite/tensorflow-lite.iml" beforeDir="false" afterPath="$PROJECT_DIR$/tensorflow-lite/tensorflow-lite.iml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +39,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/CameraActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="-2178">
               <folding>
                 <element signature="e#0#17612#0" expanded="true" />
               </folding>
@@ -77,29 +47,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/DetectorActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="54" column="60" selection-start-line="54" selection-start-column="54" selection-end-line="54" selection-end-column="60" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/tflite/TFLiteObjectDetectionAPIModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="594">
-              <caret line="60" column="41" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/tracking/MultiBoxTracker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="203" column="60" selection-start-line="203" selection-start-column="60" selection-end-line="203" selection-end-column="60" />
+            <state relative-caret-position="303">
+              <caret line="331" column="25" selection-start-line="331" selection-start-column="25" selection-end-line="331" selection-end-column="25" />
+              <folding>
+                <element signature="e#0#12725#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -109,6 +64,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>detect.</find>
+      <find>heightObjectClosest</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/app</dir>
@@ -136,10 +92,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -249,13 +205,13 @@
       <window_info id="Resources Explorer" order="7" />
       <window_info id="Capture Tool" order="8" />
       <window_info anchor="bottom" id="Run" order="0" />
-      <window_info anchor="bottom" id="Logcat" order="1" weight="0.3275862" />
+      <window_info anchor="bottom" id="Logcat" order="1" weight="0.3265086" />
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" />
       <window_info anchor="bottom" id="Terminal" order="4" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="6" />
-      <window_info anchor="bottom" id="Build" order="7" visible="true" weight="0.32937366" />
+      <window_info active="true" anchor="bottom" id="Build" order="7" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Android Profiler" order="8" />
       <window_info anchor="bottom" id="Find" order="9" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" />
@@ -266,12 +222,10 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/CameraActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/tflite/TFLiteObjectDetectionAPIModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#17612#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="522">
+          <caret line="60" column="41" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
         </state>
       </provider>
     </entry>
@@ -282,17 +236,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/tflite/TFLiteObjectDetectionAPIModel.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/CameraActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="594">
-          <caret line="60" column="41" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
+        <state relative-caret-position="-2178">
+          <folding>
+            <element signature="e#0#17612#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/org/tensorflow/lite/examples/detection/tracking/MultiBoxTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="149">
-          <caret line="203" column="60" selection-start-line="203" selection-start-column="60" selection-end-line="203" selection-end-column="60" />
+        <state relative-caret-position="303">
+          <caret line="331" column="25" selection-start-line="331" selection-start-column="25" selection-end-line="331" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#12725#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

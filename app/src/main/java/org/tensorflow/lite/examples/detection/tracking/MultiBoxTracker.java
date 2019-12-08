@@ -101,13 +101,13 @@ public class MultiBoxTracker {
 //      System.out.println("Detect: ");
       android.hardware.Camera.Parameters parameters;
       parameters = camera.getParameters();
-      focalLength = parameters.getFocalLength();
+//      focalLength = parameters.getFocalLength();
       horizontalAngleView = parameters.getHorizontalViewAngle();
       focalLength = (float) ((sizeWidth * 0.5) / Math.tan(horizontalAngleView * 0.5 * Math.PI/180));
 //      focalLength = 1250;
       camera.stopPreview();
       camera.release();
-      System.out.println("Focal: " + focalLength);
+      System.out.println("Focal: " + focalLength + " - sizeWidth: " + sizeWidth);
 
     } catch (RuntimeException ex) {
       // Here is your problem. Catching RuntimeException will make camera object null,
@@ -185,6 +185,16 @@ public class MultiBoxTracker {
             sensorOrientation,
             false);
 
+    // For Text to Speech
+    float distanceClosest = 1000;
+    String labelClosest = "";
+    String positionCloset = "";
+
+    // For each object
+    float heightObject = 0;
+    float distance = 0;
+    String label;
+
     for (final TrackedRecognition recognition : trackedObjects) {
       if (recognition.title.equals("chair") || recognition.title.equals("person") || recognition.title.equals("car")) {
         final RectF trackedPos = new RectF(recognition.location);
@@ -203,11 +213,8 @@ public class MultiBoxTracker {
 
         String position = objectPosition(trackedPos, width);
 
-
   //      System.out.println("Object: " + recognition.title);
 
-
-        float heightObject = 0;
         if (recognition.title.equals("chair"))
           heightObject = (float) 3.0;
         else if (recognition.title.equals("person"))
@@ -215,25 +222,35 @@ public class MultiBoxTracker {
         else if (recognition.title.equals("car"))
           heightObject = (float) 4.5;
         System.out.println("Object Inside: Height " + (trackedPos.bottom - trackedPos.top) + " - Width " + (trackedPos.right - trackedPos.left) + " - " + recognition.title);
-        float distance = distance_to_camera(heightObject, focalLength, trackedPos.bottom - trackedPos.top);
-        final String label = recognition.title.substring(0, 1).toUpperCase() + recognition.title.substring(1);
+        distance = distance_to_camera(heightObject, focalLength, trackedPos.bottom - trackedPos.top);
+
+        label = recognition.title.substring(0, 1).toUpperCase() + recognition.title.substring(1);
         final String labelString =
                 !TextUtils.isEmpty(recognition.title)
                         ? String.format("%s - %s", label, position, distance)
                         : String.format("%.2f", (100 * recognition.detectionConfidence));
         //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
         // labelString);
-        if (!sound) {
-          sound = true;
-          makeSound("There is a " + label + " " + Math.round(distance) + " feet to your " + position);
-        }
+
 
         borderedText.drawText(
                 canvas, trackedPos.left + cornerSize, trackedPos.top, labelString, boxPaint);
         borderedText.drawText(
                 canvas, trackedPos.left + cornerSize, trackedPos.bottom, String.format("%.2f ft", distance), boxPaint);
+
+        if (distance < distanceClosest) {
+          distanceClosest = distance;
+          labelClosest = label;
+          positionCloset = position;
+        }
       }
     }
+    // alert the closest object from the camera
+    if (!sound && !"".equals(labelClosest)) {
+      sound = true;
+      makeSound("There is a " + labelClosest + " " + Math.round(distanceClosest) + " feet to your " + positionCloset);
+    }
+
   }
 
   private void makeSound (String content) {
@@ -241,13 +258,10 @@ public class MultiBoxTracker {
       @Override
       public void run() {
         try {
-//                    System.out.println("Shake: " + shaking);
-//                    System.out.println("Wait: " + wait);
-          // we add 100 new entries
 
           tts.speak(content, TextToSpeech.QUEUE_ADD, null);
 //          System.out.println("content: " + content);
-          for (int i = 1; i < 20; i++) {
+          for (int i = 0; i < 15; i++) {
 //            System.out.println("Shake: " + i);
             //Toast.makeText( getActivity(),"Cancel Alert in: " +i + " seconds", Toast.LENGTH_SHORT).show();
             Thread.sleep(200);
