@@ -25,12 +25,17 @@ import android.graphics.Paint.Cap;
 import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.hardware.Camera;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Pair;
+import android.util.Size;
 import android.util.TypedValue;
+import java.lang.Math;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 import org.tensorflow.lite.examples.detection.env.BorderedText;
 import org.tensorflow.lite.examples.detection.env.ImageUtils;
@@ -69,18 +74,59 @@ public class MultiBoxTracker {
   private int frameWidth;
   private int frameHeight;
   private int sensorOrientation;
+  float focalLength;
+  float horizontalAngleView;
+  private TextToSpeech tts;
+  Camera  camera;
+  private boolean sound = false;
 
-  public MultiBoxTracker(final Context context) {
+  //add params
+  Camera.Parameters params;
+
+  public MultiBoxTracker(final Context context, int sizeWidth) {
     for (final int color : COLORS) {
       availableColors.add(color);
     }
-
     boxPaint.setColor(Color.RED);
     boxPaint.setStyle(Style.STROKE);
     boxPaint.setStrokeWidth(10.0f);
     boxPaint.setStrokeCap(Cap.ROUND);
     boxPaint.setStrokeJoin(Join.ROUND);
     boxPaint.setStrokeMiter(100);
+
+//    focalLength = 1250;
+    try {
+      camera = Camera.open();
+      camera.startPreview();
+//      System.out.println("Detect: ");
+      android.hardware.Camera.Parameters parameters;
+      parameters = camera.getParameters();
+//      focalLength = parameters.getFocalLength();
+      horizontalAngleView = parameters.getHorizontalViewAngle();
+      focalLength = (float) ((sizeWidth * 0.5) / Math.tan(horizontalAngleView * 0.5 * Math.PI/180));
+//      focalLength = 1250;
+      camera.stopPreview();
+      camera.release();
+      System.out.println("Focal: " + focalLength + " - sizeWidth: " + sizeWidth);
+
+    } catch (RuntimeException ex) {
+      // Here is your problem. Catching RuntimeException will make camera object null,
+// so method 'getParameters();' won't work :)
+      System.out.println("Fail: " + ex);
+      android.hardware.Camera.Parameters parameters;
+      parameters = camera.getParameters();
+      focalLength = parameters.getFocalLength();
+      System.out.println("Focal2: " + focalLength);
+    }
+
+    tts = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
+      @Override
+      public void onInit(int status) {
+        if(status != TextToSpeech.ERROR) {
+          tts.setLanguage(Locale.UK);
+        }
+      }
+    });
 
     textSizePx =
         TypedValue.applyDimension(
@@ -95,7 +141,9 @@ public class MultiBoxTracker {
     this.sensorOrientation = sensorOrientation;
   }
 
-  public synchronized void drawDebug(final Canvas canvas) {
+
+
+    public synchronized void drawDebug(final Canvas canvas) {
     final Paint textPaint = new Paint();
     textPaint.setColor(Color.WHITE);
     textPaint.setTextSize(60.0f);
@@ -136,44 +184,128 @@ public class MultiBoxTracker {
             (int) (multiplier * (rotated ? frameWidth : frameHeight)),
             sensorOrientation,
             false);
+
+    // For Text to Speech
+    float distanceClosest = 1000;
+    String labelClosest = "";
+    String positionCloset = "";
+
+    // For each object
+    float heightObject = 0;
+    float distance = 0;
+    String label;
+
     for (final TrackedRecognition recognition : trackedObjects) {
-      final RectF trackedPos = new RectF(recognition.location);
+      if (recognition.title.equals("chair") || recognition.title.equals("person") || recognition.title.equals("car")) {
+        final RectF trackedPos = new RectF(recognition.location);
 
-      getFrameToCanvasMatrix().mapRect(trackedPos);
-      boxPaint.setColor(recognition.color);
+        getFrameToCanvasMatrix().mapRect(trackedPos);
+        boxPaint.setColor(recognition.color);
 
-      float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
-      canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
+        float cornerSize = Math.min(trackedPos.width(), trackedPos.height()) / 8.0f;
+        canvas.drawRoundRect(trackedPos, cornerSize, cornerSize, boxPaint);
 
-//      DisplayMetrics displayMetrics = new DisplayMetrics();
-//      ((Activity) getContext())getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-      int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-      int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+  //      DisplayMetrics displayMetrics = new DisplayMetrics();
+  //      ((Activity) getContext())getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
 
-//      System.out.println("Screen: " + String.valueOf(height) + " " + String.valueOf(width));
-//      System.out.println("Obeject: Top-" + String.valueOf(trackedPos.top) + " bottom-" +
-//              String.valueOf(trackedPos.bottom) +" left-" + String.valueOf(trackedPos.left)
-//              +" right-" + String.valueOf(trackedPos.right));
-      String position = "";
-      if (trackedPos.left < width/20 && trackedPos.right < width/2)
-        position = "Extreme Left";
-      else if (width - trackedPos.right < width/20 && trackedPos.left > width/2)
-        position = "Extreme Right";
-      else if (trackedPos.right - width/2 < width / 20 || width/2 - trackedPos.right >= 0)
-          position = "Left";
-      else if(width/2- trackedPos.left < width / 20 || trackedPos.left - width/2 >= 0)
-        position = "Right";
-      else
-        position = "Center";
-      final String labelString =
-          !TextUtils.isEmpty(recognition.title)
-              ? String.format("%s - %s - %.2f", recognition.title, position, (100 * recognition.detectionConfidence))
-              : String.format("%.2f", (100 * recognition.detectionConfidence));
-      //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
-      // labelString);
-      borderedText.drawText(
-          canvas, trackedPos.left + cornerSize, trackedPos.top, labelString + "%", boxPaint);
+
+        String position = objectPosition(trackedPos, width);
+
+  //      System.out.println("Object: " + recognition.title);
+
+        if (recognition.title.equals("chair"))
+          heightObject = (float) 3.0;
+        else if (recognition.title.equals("person"))
+          heightObject = (float) 6.0;
+        else if (recognition.title.equals("car"))
+          heightObject = (float) 4.5;
+        System.out.println("Object Inside: Height " + (trackedPos.bottom - trackedPos.top) + " - Width " + (trackedPos.right - trackedPos.left) + " - " + recognition.title);
+        distance = distance_to_camera(heightObject, focalLength, trackedPos.bottom - trackedPos.top);
+
+        label = recognition.title.substring(0, 1).toUpperCase() + recognition.title.substring(1);
+        final String labelString =
+                !TextUtils.isEmpty(recognition.title)
+                        ? String.format("%s - %s", label, position, distance)
+                        : String.format("%.2f", (100 * recognition.detectionConfidence));
+        //            borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.top,
+        // labelString);
+
+
+        borderedText.drawText(
+                canvas, trackedPos.left + cornerSize, trackedPos.top, labelString, boxPaint);
+        borderedText.drawText(
+                canvas, trackedPos.left + cornerSize, trackedPos.bottom, String.format("%.2f ft", distance), boxPaint);
+
+        if (distance < distanceClosest) {
+          distanceClosest = distance;
+          labelClosest = label;
+          positionCloset = position;
+        }
+      }
     }
+    // alert the closest object from the camera
+    if (!sound && !"".equals(labelClosest)) {
+      sound = true;
+      makeSound("There is a " + labelClosest + " " + Math.round(distanceClosest) + " feet to your " + positionCloset);
+    }
+
+  }
+
+  private void makeSound (String content) {
+    new Thread(new Runnable() {
+      @Override
+      public void run() {
+        try {
+
+          tts.speak(content, TextToSpeech.QUEUE_ADD, null);
+//          System.out.println("content: " + content);
+          for (int i = 0; i < 15; i++) {
+//            System.out.println("Shake: " + i);
+            //Toast.makeText( getActivity(),"Cancel Alert in: " +i + " seconds", Toast.LENGTH_SHORT).show();
+            Thread.sleep(200);
+
+          }
+          tts.stop();
+          //tts.shutdown();
+          sound = false;
+
+
+        }
+        catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }).start();
+  }
+
+  private float distance_to_camera(float knownWidth, float focalLength, float perWidth) {
+      //compute and return the distance from the maker to the camera
+      return (knownWidth * focalLength) / perWidth;
+  }
+
+  private String objectPosition (RectF trackedPos, int width) {
+    String position = "";
+    if ((trackedPos.right <= width / 2) ||
+            (trackedPos.right - width / 2 < width / 8 && trackedPos.left < width / 4))
+    {
+      if (trackedPos.right <= width / 4)
+        position = "Extreme Left";
+      else
+        position = "Left";
+    }
+
+    else if ((trackedPos.left >= width / 2) ||
+            (width / 2 - trackedPos.left < width / 8 && width - trackedPos.right < width / 4)) {
+      if (trackedPos.left >= (width - width / 4))
+        position = "Extreme Right";
+      else
+        position = "Right";
+    }
+    else
+      position = "Center";
+    return position;
   }
 
   private void processResults(final List<Recognition> results) {

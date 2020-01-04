@@ -85,6 +85,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private ImageView plusImageView, minusImageView;
   private SwitchCompat apiSwitchCompat;
   private TextView threadsTextView;
+  private float focalLength;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -202,6 +203,9 @@ public abstract class CameraActivity extends AppCompatActivity
         previewHeight = previewSize.height;
         previewWidth = previewSize.width;
         rgbBytes = new int[previewWidth * previewHeight];
+        focalLength = camera.getParameters().getFocalLength();
+        System.out.println("focalLength preview: " + focalLength);
+
         onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), 90);
       }
     } catch (final Exception e) {
